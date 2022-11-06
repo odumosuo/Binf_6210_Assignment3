@@ -1,7 +1,7 @@
 # Binf_6210_Assignment3
-Binf 6210 assignment 3 in Master Bioinformatics program
+Binf 6210 assignment 3 in Master Bioinformatics program  
 
-Group members:
+Group members:  
 Amjad Osman  
 Kasra Foroughi   
 Olusegun Odumosu   
