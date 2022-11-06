@@ -9,3 +9,5 @@ Omar Amin
 
 Primary authoer: Olusegun Odumosu  
 Secondary contributor: ?????????  
+
+Original script: Assignment 2 - machine learning  
