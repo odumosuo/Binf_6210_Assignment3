@@ -7,7 +7,7 @@ Kasra Foroughi
 Olusegun Odumosu   
 Omar Amin   
 
-Primary authoer: Olusegun Odumosu  
+Primary author: Olusegun Odumosu  
 Secondary contributor: ?????????  
 
 Original script: Assignment 2 - machine learning  
