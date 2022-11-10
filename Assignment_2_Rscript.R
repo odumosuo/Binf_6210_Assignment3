@@ -5,8 +5,9 @@
 
 ####setting up####
 ###install packages
-# install.packages("taxize")
-# install.packages("caret")
+install.packages("taxize")
+install.packages("caret")
+install.packages("gbm")
 
 ###load packages
 library(tidyverse)
@@ -15,6 +16,7 @@ library(rentrez)
 library(taxize)
 library(sys)
 library(caret)
+library(gbm)
 
 ###Get present Working Directory. Previously set working directory with setwd(). Excluded runnable function to prevent error.
 getwd()
@@ -317,7 +319,7 @@ randomForest_ntree_vs_accuracy <- data.frame(c(100, 500, 1000), c(data1_accuracy
 #assign names to variables
 names(randomForest_ntree_vs_accuracy) <- c("ntree", "Accuracy")
 View(randomForest_ntree_vs_accuracy)
-#plot ntree vs accuracy with accuracy on y axis and ntree on x axis.
+#plot ntree vs accuracy with accuracy on y axis and ntree on x axis. Plot type "b" is for both(points and line)
 plot(randomForest_ntree_vs_accuracy, xlab = "ntree", ylab = "Accuracy", main = "RandomForest plot of accuracy vs ntree", type = "b", col = "blue")
 
 
@@ -359,7 +361,7 @@ plot(GBM_model, xlab = "ntree", ylab = "Accuracy(Cross-Validation)", main = "Gen
 
 ####plots to submit####
 
-###RadomForest ntree vs accuracy plot
+###RadomForest ntree vs accuracy plot. Plot type "b" is for both(points and line)
 plot(randomForest_ntree_vs_accuracy, xlab = "ntree", ylab = "Accuracy", main = "RandomForest plot of accuracy vs ntree", type = "b", col = "blue")
 
 
@@ -404,11 +406,9 @@ plot2 <- boxplot(nchar(df_carnivora_seq_beforesubset$COI_sequence), xlab = "COI_
 #  Jessica Labarcena – for your endless patience with dealing with our problems
 #Gibran Edun – for your assistance in resolving a problem with tax_name
 #Nishita Sharif – for bringing to my attention that it was possible to combine plots in R
-#I would also like to acknowledge Daniel Amoako, Amjad Osman, Jesse, Omar Khan and Kazra for engaging in discussion pertaining to this project. 
+#I would also like to acknowledge Daniel Amoako, Amjad Osman, Jesse, and Omar Khan and Kazra for engaging in discussion pertaining to this project. 
 
-#Initial preprosessing of the nucleotide data included removing any “-“ or “N” that might have been at the front of the sequence or at the back. This was followed by removing all “-“. This is done because we want the raw sequence information and not aligned sequences. We then omit any records where the percentage of remaining “N”s is greater than 1%. This 1% cut-off is adopted from the methods used Orton et al. (2019). Additionally, the sequence length variation was explored and reduced. As seen in Figure 1. , a histogram and boxplot of the sequence lengths was plotted. Subsequently, a subset of the records within the interquartile range was used for analysis. The proportions of A, T and G nucleotides, as well as the dinucleotide and trinucleotide frequencies were used to train the models.  
-#Both the randomForest and Generalized boosted model performed well for the supervised machine learning. The randomForest had an accuracy of 98.21% while the GBM had an accuracy of 98.00%. The randomForest performed slightly better. The family of interest Ursidae, was predicted with a 100% accuracy using random forest. Gradient boosting can perform better than random forest but it is less appropriate for data with a lot of noise because it results in overfitting (Glen, 2019). The training and validation data were randomly sampled from the records. However, sampling with replacement was done because of under-representation of some families; Ailuridae had a sample size of 3, Odobenidae had 2, Otariidae had 4 and Procyonidae had 9, all out of 872 observations. This sampling with replacement is likely to produce noise in the data. Additionally, the paper probed at the relationship between the number of trees and the accuracy of the model. As seen in Figure 2. and Figure 3., for both randomForest and gbm the accuracy of the models piques at an ntree value then drops or plateaus. The learning rate shouldn’t be too big (small number of iterations) or too small (many iterations) (Bradley & Brandon, 2020). 
-#In conclusion, the two models worked relatively well. Some limitations in the study arise from under sampling of the data. Aside from the underrepresentation of families found in the data, there is a lack of representation of some families and species. The carnivora order is comprised of 296 species and 16 families (Hassanin et al., 2021). This data set included 101 species and 13 families. Further sampling should improve accuracy of results.  Future analysis might apply these models to different marker genes and compare the accuracy. It would also be interesting to use unsupervised machine learning in the Ursidae family and compare the number of clusters to the number of BINs (Barcode Index Numbers) and species in the BOLD database. 
+
 
 ####References####
 #A Gentle Introduction to k-fold Cross-Validation (2018). Machinelearningmastery. Retrieved October 27, 2022, from https://machinelearningmastery.com/k-fold-cross-validation/
