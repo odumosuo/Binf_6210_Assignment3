@@ -168,6 +168,17 @@ View(df_carnivora_seq)
 df_carnivora_seq <- cbind(df_carnivora_seq, as.data.frame(dinucleotideFrequency(df_carnivora_seq$COI_sequence2, as.prob = TRUE)))
 
 df_carnivora_seq <- cbind(df_carnivora_seq, as.data.frame(trinucleotideFrequency(df_carnivora_seq$COI_sequence2, as.prob = TRUE)))
+
+
+
+
+########### Edit_1 A ###########
+#Add k-mer of 4 to the oligonucleotide frequencies at df_carnivora_seq to increase the accuracy of the machine learning algorithyms.
+df_carnivora_seq <- cbind(df_carnivora_seq, as.data.frame(oligonucleotideFrequency(x = df_carnivora_seq$COI_sequence2, width = 4, as.prob = TRUE)))
+
+
+
+
 #check to see everything added
 names(df_carnivora_seq)
 View(df_carnivora_seq)
@@ -210,7 +221,11 @@ table(dfTraining_COI$Family_name)
 #Build classifier to separate Family_names. Using A, T, and G proportions as well as dinucleotide and tricnucleotide frequencies as predictors. The response variable is Family_name.
 names(df_carnivora_seq)
 
-COI_randomforest_classifier <- randomForest::randomForest(x = dfTraining_COI[, 11:93], y = as.factor(dfTraining_COI$Family_name), ntree = 100, importance = TRUE)
+
+###### Edit_1 B ########
+#Change the end index of data used to train the classifier to include k-mers of length 4.
+
+COI_randomforest_classifier <- randomForest::randomForest(x = dfTraining_COI[, 11:349], y = as.factor(dfTraining_COI$Family_name), ntree = 100, importance = TRUE)
 
 #View some specifics of the random forest classifier
 COI_randomforest_classifier 
@@ -228,7 +243,15 @@ randomForest_accuracy <- 1 - OBB_error_rate
 
 ###Testing classification model
 #Test classifier with Validation dataframe
-COI_predict_Validation <- predict(COI_randomforest_classifier, dfValidation_COI[ , c(2, 11:93)])
+
+
+
+###### Edit_1 C ########
+#Change the end index of data used to train the classifier to include k-mers of length 4.
+COI_predict_Validation <- predict(COI_randomforest_classifier, dfValidation_COI[ , c(2, 11:349)])
+
+
+
 ##Check result of prediction
 #check properties of prediction
 COI_predict_Validation
@@ -249,8 +272,12 @@ table(observed = dfValidation_COI$Family_name, predicted = COI_predict_Validatio
 ###How does a different model compare to the random forest?
 ###Training a Generalized Boosted Regression Models (GBM) with the more robust Caret package
 #subset data to only include predictor and response variables
-GBM_dfValidation <- dfValidation_COI[ , c(2, 11:93)]
-GBM_dfTraining <- dfTraining_COI[ , c(2, 11:93)]
+
+###### Edit_1 D ########
+#Change the end index of data used to train the classifier to include k-mers of length 4.
+
+GBM_dfValidation <- dfValidation_COI[ , c(2, 11:349)]
+GBM_dfTraining <- dfTraining_COI[ , c(2, 11:349)]
 class(GBM_dfValidation)
 class(GBM_dfValidation)
 #change class to data frame
@@ -293,11 +320,15 @@ table(observed = GBM_dfValidation$Family_name, predicted = GBM_predict_validatio
 
 ###How does accuracy change with number of iterations?
 ##perform random forest 3 times with different ntree. use ntree (100, 500, 1000)
-data1_randomforest_plot <- randomForest::randomForest(x = dfTraining_COI[, 11:93], y = as.factor(dfTraining_COI$Family_name), ntree = 100, importance = TRUE)
 
-data2_randomforest_plot <- randomForest::randomForest(x = dfTraining_COI[, 11:93], y = as.factor(dfTraining_COI$Family_name), ntree = 500, importance = TRUE)
 
-data3_randomforest_plot <- randomForest::randomForest(x = dfTraining_COI[, 11:93], y = as.factor(dfTraining_COI$Family_name), ntree = 1000, importance = TRUE)
+###### Edit_1 E ########
+#Change the end index of data used to train the classifier to include k-mers of length 4.
+data1_randomforest_plot <- randomForest::randomForest(x = dfTraining_COI[, 11:349], y = as.factor(dfTraining_COI$Family_name), ntree = 100, importance = TRUE)
+
+data2_randomforest_plot <- randomForest::randomForest(x = dfTraining_COI[, 11:349], y = as.factor(dfTraining_COI$Family_name), ntree = 500, importance = TRUE)
+
+data3_randomforest_plot <- randomForest::randomForest(x = dfTraining_COI[, 11:349], y = as.factor(dfTraining_COI$Family_name), ntree = 1000, importance = TRUE)
 
 ###store ntree and accuracy numbers
 ##get accuracy of models. accuracy = 1 - error rate
