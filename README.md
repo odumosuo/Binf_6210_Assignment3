@@ -8,7 +8,7 @@ Olusegun Odumosu
 Omar Amin   
 
 Primary author: Olusegun Odumosu  
-Secondary contributor: ?????????  
+Secondary contributor: Amjad Osman
 
 Original script: Assignment 2 - machine learning  
 
