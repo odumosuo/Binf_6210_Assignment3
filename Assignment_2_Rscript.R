@@ -363,53 +363,6 @@ plot(GBM_model, xlab = "ntree", ylab = "Accuracy(Cross-Validation)", main = "Gen
 
 
 
-###### Edit_2 #####
-#Create our own confusion matrix.
-random_forest_confusion_table <- table(dfValidation_COI$Family_name, COI_predict_Validation)
-
-random_forest_confusion_table
-
-
-
-#Creating a data frame with confusion matrix.
-df_random_forest_confusion_table <- data.frame(random_forest_confusion_table)
-View(df_random_forest_confusion_table)
-
-Column_names <- c("Observed","Predicted","Freq")
-colnames(df_random_forest_confusion_table) <- Column_names
-View(df_random_forest_confusion_table)
-
-#Creating a plot for the confusion table
-confusion_table_plot <- ggplot(data =  df_random_forest_confusion_table, mapping = aes(x = Predicted, y = Observed)) +
-  geom_tile(aes(fill = Freq), colour = "white") +
-  geom_text(aes(label = sprintf("%1.0f", Freq)), vjust = 1) +
-  scale_fill_gradient(low = "blue", high = "red") +
-  theme_bw() + theme(legend.position = "none")+
-  labs(title = "Random Forest confusion table")+
-  theme(plot.title = element_text(hjust = 0.5))
-
-confusion_table_plot
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -445,7 +398,32 @@ plot2 <- boxplot(nchar(df_carnivora_seq_beforesubset$COI_sequence), xlab = "COI_
 
 
 
+###### Edit_2 #####
+#Create our own confusion matrix.
+random_forest_confusion_table <- table(dfValidation_COI$Family_name, COI_predict_Validation)
 
+random_forest_confusion_table
+
+
+
+#Creating a data frame with confusion matrix.
+df_random_forest_confusion_table <- data.frame(random_forest_confusion_table)
+View(df_random_forest_confusion_table)
+
+Column_names <- c("Observed","Predicted","Freq")
+colnames(df_random_forest_confusion_table) <- Column_names
+View(df_random_forest_confusion_table)
+
+#Creating a plot for the confusion table
+confusion_table_plot <- ggplot(data =  df_random_forest_confusion_table, mapping = aes(x = Predicted, y = Observed)) +
+  geom_tile(aes(fill = Freq), colour = "white") +
+  geom_text(aes(label = sprintf("%1.0f", Freq)), vjust = 1) +
+  scale_fill_gradient(low = "blue", high = "red") +
+  theme_bw() + theme(legend.position = "none")+
+  labs(title = "Random Forest confusion table of Validation data")+
+  theme(plot.title = element_text(hjust = 0.5))
+
+confusion_table_plot
 
 
 
